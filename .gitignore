@@ -1,0 +1,18 @@
+# Vivado Logs and Temp Files
+*.jou
+*.log
+*.str
+*.zip
+*.dcp
+*.bit
+*.wdb
+*.wcfg
+*.pb
+
+# Vivado Auto-Generated Folders
+.Xil/
+*.cache/
+*.hw/
+*.sim/
+*.runs/
+*.ip_user_files/

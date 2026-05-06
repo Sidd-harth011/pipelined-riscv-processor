@@ -1,0 +1,7 @@
+01400093 // 1. ADDI x1, x0, 20   (Load 20 into x1)
+00102023 // 2. SW   x1, 0(x0)    (Store x1 into RAM address 0)
+00002103 // 3. LW   x2, 0(x0)    (Load RAM address 0 into x2)
+001101b3 // 4. ADD  x3, x2, x1   (HAZARD! Needs x2 immediately. Forces 1-cycle Stall)
+00000263 // 5. BEQ  x0, x0, 8    (Unconditional Branch! Skip the next instruction)
+06300213 // 6. ADDI x4, x0, 99   (This is the WRONG instruction! Forces Pipeline Flush)
+06400293 // 7. ADDI x5, x0, 100  (Branch Target. Safe execution continues here)
