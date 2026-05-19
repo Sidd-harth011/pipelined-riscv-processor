@@ -10,7 +10,6 @@ module imem (
 
     // Load the compiled RISC-V program into memory
     initial begin
-        // We will create this program.hex file later when we write our testbench!
         $readmemh("program.mem", rom_array);
     end
 

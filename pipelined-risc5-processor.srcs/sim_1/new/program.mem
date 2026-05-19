@@ -1,7 +1,41 @@
+//01400093 // 1. ADDI x1, x0, 20   (Load 20 into x1)
+//00102023 // 2. SW   x1, 0(x0)    (Store x1 into RAM address 0)
+//00002103 // 3. LW   x2, 0(x0)    (Load RAM address 0 into x2)
+//001101b3 // 4. ADD  x3, x2, x1   (HAZARD! Needs x2 immediately. Forces 1-cycle Stall)
+//00000263 // 5. BEQ  x0, x0, 8    (Unconditional Branch! Skip the next instruction)
+//06300213 // 6. ADDI x4, x0, 99   (This is the WRONG instruction! Forces Pipeline Flush)
+//06400293 // 7. ADDI x5, x0, 100  (Branch Target. Safe execution continues here)
+
+//for basic hazard free working
+//00a00113 // ADDI x2, x0, 10  (Load 10 into x2)
+//002081b3 // ADD  x3, x1, x2  (x3 = 5 + 10 = 15)
+//40110233 // SUB  x4, x2, x1  (x4 = 10 - 5 = 5)
+//0020f2b3 // AND  x5, x1, x2  (x5 = 5 & 10 = 0)
+
+//for showing waveforms for look back in time ( data forwarding , raw hazard execution )
+//00a00093 // 1. ADDI x1, x0, 10  (Load 10 into x1)
+//01400113 // 2. ADDI x2, x0, 20  (Load 20 into x2)
+//002081b3 // 3. ADD  x3, x1, x2  (HAZARD! Needs x1 and x2 immediately)
+//00000013 // 4. NOP
+//00000013 // 5. NOP
+
+//load-use stall (data hazard freeze)
+//01400093 // 1. ADDI x1, x0, 20   (Load 20 into x1)
+//00102023 // 2. SW   x1, 0(x0)    (Store 20 into RAM address 0)
+//00002103 // 3. LW   x2, 0(x0)    (Load RAM address 0 into x2)
+//001101b3 // 4. ADD  x3, x2, x1   (HAZARD! Needs x2 immediately. Forces Stall)
+//00000013 // 5. NOP
+
+//control hazard (branch flush)
+//00500093 // 1. ADDI x1, x0, 5    (Safe instruction)
+//00000263 // 2. BEQ  x0, x0, 8    (0 == 0, so Jump forward!)
+//06300213 // 3. ADDI x4, x0, 99   (WRONG INSTRUCTION! Will get flushed)
+//06400293 // 4. ADDI x5, x0, 100  (Correct Branch Target)
+//00000013 // 5. NOP
+
+//memory interface
 01400093 // 1. ADDI x1, x0, 20   (Load 20 into x1)
-00102023 // 2. SW   x1, 0(x0)    (Store x1 into RAM address 0)
-00002103 // 3. LW   x2, 0(x0)    (Load RAM address 0 into x2)
-001101b3 // 4. ADD  x3, x2, x1   (HAZARD! Needs x2 immediately. Forces 1-cycle Stall)
-00000263 // 5. BEQ  x0, x0, 8    (Unconditional Branch! Skip the next instruction)
-06300213 // 6. ADDI x4, x0, 99   (This is the WRONG instruction! Forces Pipeline Flush)
-06400293 // 7. ADDI x5, x0, 100  (Branch Target. Safe execution continues here)
+00102023 // 2. SW   x1, 4(x0)    (Store 20 into RAM Address 0x04)
+00402103 // 3. LW   x2, 4(x0)    (Load RAM Address 0x04 into x2)
+00000013 // 4. NOP
+00000013 // 5. NOP
